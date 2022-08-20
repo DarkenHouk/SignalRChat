@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SignalRChat.DB;
 
@@ -11,9 +12,10 @@ using SignalRChat.DB;
 namespace SignalRChat.Migrations
 {
     [DbContext(typeof(ChatContext))]
-    partial class ChatContextModelSnapshot : ModelSnapshot
+    [Migration("20220820154259_AddChat")]
+    partial class AddChat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +66,7 @@ namespace SignalRChat.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("SignalRChat.Models.User", b =>
@@ -121,7 +123,7 @@ namespace SignalRChat.Migrations
 
                     b.HasIndex("LastReadMessageId");
 
-                    b.ToTable("UserChatRooms");
+                    b.ToTable("UserChatRoom");
                 });
 
             modelBuilder.Entity("SignalRChat.Models.Message", b =>

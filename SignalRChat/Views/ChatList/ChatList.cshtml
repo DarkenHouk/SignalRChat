@@ -1,0 +1,12 @@
+﻿@model SignalRChat.Models.ChatListVM
+
+<div class="list-group">
+
+    @foreach(ChatRoomVM model in Model.chatRooms)
+    {
+        <a href="#" class="list-group-item list-group-item-action active">
+            {model.Id}: {model.Name}
+        </a>
+    }
+    
+</div>

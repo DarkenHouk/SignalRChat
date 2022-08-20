@@ -11,7 +11,7 @@ using SignalRChat.DB;
 namespace SignalRChat.Migrations
 {
     [DbContext(typeof(ChatContext))]
-    [Migration("20220818114750_init")]
+    [Migration("20220820132628_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

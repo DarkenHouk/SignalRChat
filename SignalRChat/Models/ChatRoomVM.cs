@@ -1,0 +1,8 @@
+﻿namespace SignalRChat.Models
+{
+    public class ChatRoomVM
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
