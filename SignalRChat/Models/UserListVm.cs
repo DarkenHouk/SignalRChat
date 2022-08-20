@@ -1,7 +1,7 @@
 ﻿namespace SignalRChat.Models
 {
-    public class UserListVm
+    public class UserListVM
     {
-        public IList<User> Users { get; set; }
+        public IList<UserVM> Users { get; set; }
     }
 }

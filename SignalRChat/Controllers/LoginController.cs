@@ -11,20 +11,36 @@ namespace SignalRChat.Controllers
         {
             _userRepository = userRepository;
         }
-        public IActionResult Login()
+        private async Task<IActionResult> LoginStart()
         {
-            User user = new User();
-            return View();
+            //User user = new User();
+            return await Task.Run(() => View());
         }
 
-        public async Task<IActionResult> Login(User user)
+        private async Task<IActionResult> LoginAuth(User user)
         {
-            var result = await _userRepository.ConfirmPassword(user.UserName, user.Password);
-            if(result==null)
+            try
             {
-                Login();
+                var result = await _userRepository.ConfirmPassword(user.UserName, user.Password);
+                if (result != null)
+                {
+                    return RedirectToAction("ChatList", "ChatList", new
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Messages = user.Messages,
+                        UserChatRooms = user.UserChatRooms
+                    });
+                }
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
             return View();
         }
+
+        public Task<IActionResult> Login(User user) => (user.UserName == null)&&(user.Password==null) ? LoginStart() : LoginAuth(user);
     }
 }

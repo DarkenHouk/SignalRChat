@@ -2,6 +2,6 @@
 {
     public class ChatListVM
     {
-        public IList<ChatRoomVM> chatRooms { get; set; }
+        public IEnumerable<ChatRoomVM> chatRooms { get; set; }
     }
 }

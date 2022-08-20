@@ -9,13 +9,13 @@ namespace SignalRChat.Services
         private readonly IMessageRepository _messageRepository;
         private readonly IUserChatRoomRepository _userChatRoomRepository;
         private readonly IChatRoomRepository _chatRoomRepository;
-        private readonly UserRepository _userService;
+        private readonly IUserRepository _userService;
 
         public MessageService(
             IMessageRepository messageRepository,
             IUserChatRoomRepository userChatRoomRepository,
             IChatRoomRepository chatRoomRepository,
-            UserRepository userService)
+            IUserRepository userService)
         {
             _messageRepository = messageRepository;
             _userChatRoomRepository = userChatRoomRepository;

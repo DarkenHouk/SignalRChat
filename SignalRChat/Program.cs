@@ -45,5 +45,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "registration",
     pattern: "{controller=Registration}/{action=Registration}/{id?}");
+app.MapControllerRoute(
+    name: "chatLists",
+    pattern: "{controller=ChatList}/{action=ChatList}/{id?}");
 
 app.Run();
