@@ -15,15 +15,20 @@ namespace SignalRChat.Controllers
 
         public IActionResult Registration()
         {
-            User user = new User();
-            return View(user);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Registration(User user)
         {
-            var res = await _userRepository.CreateUserClient(user);
-
+            try
+            {
+                var res = await _userRepository.CreateUserClient(user);
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
             return View();
         }
 

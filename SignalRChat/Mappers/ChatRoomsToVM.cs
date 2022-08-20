@@ -1,8 +1,9 @@
-﻿using SignalRChat.Models;
+﻿using SignalRChat.Interfaces;
+using SignalRChat.Models;
 
 namespace SignalRChat.Mappers
 {
-    public class ChatRoomsToVM
+    public class ChatRoomsToVM: IChatRoomsToVM
     {
         public IEnumerable<ChatRoomVM> Map(IEnumerable<ChatRoom> chatRooms)
         {

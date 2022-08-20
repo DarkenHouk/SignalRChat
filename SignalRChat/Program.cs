@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SignalRChat.DB;
 using SignalRChat.Interfaces;
+using SignalRChat.Mappers;
 using SignalRChat.Repositories;
 using SignalRChat.Services;
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 builder.Services.AddScoped<IUserChatRoomRepository, UserChatRoomRepository>();
 builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IChatRoomsToVM, ChatRoomsToVM>();
 
 var app = builder.Build();
 

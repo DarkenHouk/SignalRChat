@@ -8,11 +8,11 @@ namespace SignalRChat.Controllers
     public class ChatListController : Controller
     {
         readonly IChatRoomService _chatRoomService;
-        readonly ChatRoomsToVM _chatRoomsToVM;
+        readonly IChatRoomsToVM _chatRoomsToVM;
 
         public ChatListController(
             IChatRoomService chatRoomService,
-            ChatRoomsToVM chatRoomsToVM)
+            IChatRoomsToVM chatRoomsToVM)
         {
             _chatRoomService = chatRoomService;
             _chatRoomsToVM = chatRoomsToVM;
