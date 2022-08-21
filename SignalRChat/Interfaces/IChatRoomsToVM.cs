@@ -4,6 +4,6 @@ namespace SignalRChat.Interfaces
 {
     public interface IChatRoomsToVM
     {
-        IEnumerable<ChatRoomVM> Map(IEnumerable<ChatRoom> chatRooms);
+        IList<Task<ChatRoomVM>> Map(IEnumerable<ChatRoom> chatRooms);
     }
 }

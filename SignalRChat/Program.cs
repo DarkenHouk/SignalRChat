@@ -14,12 +14,14 @@ builder.Services.AddDbContext<ChatContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 builder.Services.AddScoped<IUserChatRoomRepository, UserChatRoomRepository>();
 builder.Services.AddScoped<IChatRoomService, ChatRoomService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IChatRoomsToVM, ChatRoomsToVM>();
+builder.Services.AddScoped<IUsersToVM, UsersToVM>();
 
 var app = builder.Build();
 

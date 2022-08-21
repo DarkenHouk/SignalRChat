@@ -6,10 +6,10 @@ namespace SignalRChat.Controllers
 {
     public class LoginController : Controller
     {
-        readonly IUserRepository _userRepository;
-        public LoginController(IUserRepository userRepository)
+        readonly IUserService _userService;
+        public LoginController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
         private async Task<IActionResult> LoginStart()
         {
@@ -21,16 +21,11 @@ namespace SignalRChat.Controllers
         {
             try
             {
-                var result = await _userRepository.ConfirmPassword(user.UserName, user.Password);
+                var result = await _userService.ConfirmPassword(user.UserName, user.Password);
                 if (result != null)
                 {
-                    return RedirectToAction("ChatList", "ChatList", new
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Messages = user.Messages,
-                        UserChatRooms = user.UserChatRooms
-                    });
+                    var userForChat = await _userService.GetByUserName(user.UserName);
+                    return RedirectToAction("ChatList", "ChatList", userForChat);
                 }
 
             }

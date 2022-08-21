@@ -6,17 +6,17 @@ using SignalRChat.Models.Enum;
 
 namespace SignalRChat.Services
 {
-    public class ChatRoomService: IChatRoomService
+    public class ChatRoomService : IChatRoomService
     {
         readonly ChatContext _context;
         private readonly IChatRoomRepository _chatRoomRepository;
         private readonly IUserChatRoomRepository _userChatRoomRepository;
-        private readonly IUserRepository _userService;
+        private readonly IUserService _userService;
         public ChatRoomService(
             ChatContext chatContext,
             IChatRoomRepository chatRoomRepository,
             IUserChatRoomRepository userChatRoomRepository,
-            IUserRepository userService)
+            IUserService userService)
         {
             _context = chatContext;
             _chatRoomRepository = chatRoomRepository;
@@ -30,9 +30,9 @@ namespace SignalRChat.Services
             await _chatRoomRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ChatRoom>> GetChatRoomsForUserAsync(string userName)
+        public async Task<IEnumerable<ChatRoom>> GetChatRoomsForUserAsync(int userId)
         {
-            var user = await _userService.GetByUserName(userName);
+            var user = await _userService.GetUserById(userId);
             if (user is null)
             {
                 throw new Exception();
@@ -41,25 +41,23 @@ namespace SignalRChat.Services
             var chatRooms = await _chatRoomRepository.QueryAsync(
                 include: q => q.Include(cr => cr.UserChatRooms)
                                 .ThenInclude(ur => ur.User),
-                filter: cr => cr.UserChatRooms.Select(ur => ur.UserId).Contains(user.Id));
+                filter: cr => cr.UserChatRooms.Select(ur => ur.UserId).Contains(userId));
 
             return chatRooms;
         }
 
-        public async Task<UserChatRoom?> GetUserChatRoomAsync(string userName, int chatRoomId)
+        public async Task<UserChatRoom?> GetUserChatRoomAsync(int userId, int chatRoomId)
         {
-            var user = await _userService.GetByUserName(userName);
-
             return await _userChatRoomRepository.GetFirstOrDefaultAsync(
                 filter: ur =>
-                    ur.UserId == user.Id
+                    ur.UserId == userId
                     && ur.ChatRoomId == chatRoomId);
         }
 
-        public async Task<ChatRoom> EnsurePrivateRoomCreatedAsync(string memberName1, string memberName2)
+        public async Task<ChatRoom> EnsurePrivateRoomCreatedAsync(int memberId1, int memberId2)
         {
-            var (member1, member2) = (await _userService.GetByUserName(memberName1),
-                                     await _userService.GetByUserName(memberName2));
+            var (member1, member2) = (await _userService.GetUserById(memberId1),
+                                     await _userService.GetUserById(memberId2));
             if (member1 is null)
             {
                 throw new Exception();
@@ -72,8 +70,8 @@ namespace SignalRChat.Services
             var chatRoom = await _chatRoomRepository.GetFirstOrDefaultAsync(
                 include: q => q.Include(cr => cr.UserChatRooms),
                 filter: cr =>
-                    cr.UserChatRooms.Select(ur => ur.UserId).Contains(member1.Id)
-                    && cr.UserChatRooms.Select(ur => ur.UserId).Contains(member2.Id)
+                    cr.UserChatRooms.Select(ur => ur.UserId).Contains(memberId1)
+                    && cr.UserChatRooms.Select(ur => ur.UserId).Contains(memberId2)
                     && cr.Type == ChatType.Private);
 
             if (chatRoom is null)
@@ -83,8 +81,8 @@ namespace SignalRChat.Services
                     Type = ChatType.Private,
                     UserChatRooms = new[]
                     {
-                    new UserChatRoom() { UserId = member1.Id },
-                    new UserChatRoom() { UserId = member2.Id }
+                    new UserChatRoom() { UserId = memberId1 },
+                    new UserChatRoom() { UserId = memberId2 }
                 }
                 };
                 await CreateAsync(chatRoom);

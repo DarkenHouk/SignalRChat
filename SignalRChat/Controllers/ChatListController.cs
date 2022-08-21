@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SignalRChat.Interfaces;
-using SignalRChat.Mappers;
 using SignalRChat.Models;
 
 namespace SignalRChat.Controllers
@@ -10,26 +9,45 @@ namespace SignalRChat.Controllers
         readonly IChatRoomService _chatRoomService;
         readonly IChatRoomsToVM _chatRoomsToVM;
 
+        readonly IUserService _userService;
+        readonly IUsersToVM _usersToVM;
+
         public ChatListController(
             IChatRoomService chatRoomService,
-            IChatRoomsToVM chatRoomsToVM)
+            IChatRoomsToVM chatRoomsToVM,
+            IUserService userService,
+            IUsersToVM usersToVM)
         {
             _chatRoomService = chatRoomService;
             _chatRoomsToVM = chatRoomsToVM;
+            _userService = userService;
+            _usersToVM = usersToVM;
         }
 
         public async Task<IActionResult> ChatList(User user)
         {
-            var chatRooms = await _chatRoomService.GetChatRoomsForUserAsync(user.UserName);
-            var chatRoomsVM = _chatRoomsToVM.Map(chatRooms);
-            
-            var chatListVM = new ChatListVM()
+            try
             {
-                chatRooms = chatRoomsVM
-            };
+                var chatRooms = await _chatRoomService.GetChatRoomsForUserAsync(user.Id);
+                var chatRoomsVM = _chatRoomsToVM.Map(chatRooms);
 
+                var users = await _userService.GetListOfUsers(user);
+                var usersVM = _usersToVM.Map(users);
 
-            return View(chatListVM);
+                var model = new ChatsAndUsersVM()
+                {
+                    ChatRooms = chatRoomsVM,
+                    Users = usersVM
+                };
+
+                return View(model);
+
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return View();
         }
     }
 }

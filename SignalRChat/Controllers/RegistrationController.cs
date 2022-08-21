@@ -6,11 +6,11 @@ namespace SignalRChat.Controllers
 {
     public class RegistrationController : Controller
     {
-        readonly IUserRepository _userRepository;
+        readonly IUserService _userService;
 
-        public RegistrationController(IUserRepository userRepository)
+        public RegistrationController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public IActionResult Registration()
@@ -23,8 +23,11 @@ namespace SignalRChat.Controllers
         {
             try
             {
-                var res = await _userRepository.CreateUserClient(user);
-            }catch(Exception e)
+                var res = await _userService.CreateUserClient(user);
+
+                return RedirectToAction("Login", "Login", user);
+            }
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }

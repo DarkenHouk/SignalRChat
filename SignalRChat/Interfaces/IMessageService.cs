@@ -6,7 +6,7 @@ namespace SignalRChat.Interfaces
     {
         Task<Message?> GetByIdAsync(int id);
         Task<IEnumerable<Message>> GetMessagesInChatRoomAsync(int chatRoomId, int skip, int take);
-        Task<IEnumerable<Message>> GetUnreadMessagesAsync(string userName);
+        Task<IEnumerable<Message>> GetUnreadMessagesAsync(int userId);
         Task CreateAsync(Message message);
         Task ReadAsync(int readerId, int messageId);
     }

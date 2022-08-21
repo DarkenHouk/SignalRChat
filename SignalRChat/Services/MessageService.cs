@@ -9,13 +9,13 @@ namespace SignalRChat.Services
         private readonly IMessageRepository _messageRepository;
         private readonly IUserChatRoomRepository _userChatRoomRepository;
         private readonly IChatRoomRepository _chatRoomRepository;
-        private readonly IUserRepository _userService;
+        private readonly IUserService _userService;
 
         public MessageService(
             IMessageRepository messageRepository,
             IUserChatRoomRepository userChatRoomRepository,
             IChatRoomRepository chatRoomRepository,
-            IUserRepository userService)
+            IUserService userService)
         {
             _messageRepository = messageRepository;
             _userChatRoomRepository = userChatRoomRepository;
@@ -51,24 +51,26 @@ namespace SignalRChat.Services
             return messagesToRead;
         }
 
-        public async Task<IEnumerable<Message>> GetUnreadMessagesAsync(string userName)
+        public async Task<IEnumerable<Message>> GetUnreadMessagesAsync(int userId)
         {
-            var user = await _userService.GetByUserName(userName);
+            var user = await _userService.GetUserById(userId);
             if (user is null)
+            {
                 throw new Exception();
+            }
 
             var userChatRooms = await _userChatRoomRepository.QueryAsync(
                 include: q =>
                     q.Include(ur => ur.LastReadMessage!)
                         .Include(ur => ur.ChatRoom)
                         .ThenInclude(cr => cr.Messages),
-                filter: ur => ur.UserId == user.Id
+                filter: ur => ur.UserId == userId
             );
 
             var unreadMessages = userChatRooms.SelectMany(ur => ur.ChatRoom.Messages.Where(m =>
             {
                 var lastReadDateTime = ur.LastReadMessage?.SentAt ?? DateTime.MinValue;
-                return (m.SentAt > lastReadDateTime && m.SenderId != user.Id);
+                return (m.SentAt > lastReadDateTime && m.SenderId != userId);
             }));
 
             return unreadMessages;

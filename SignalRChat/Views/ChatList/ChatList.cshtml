@@ -1,12 +1,44 @@
-﻿@model SignalRChat.Models.ChatListVM
+﻿@model SignalRChat.Models.ChatsAndUsersVM
 
-<div class="list-group">
+<div class="row">
 
-    @foreach(ChatRoomVM model in Model.chatRooms)
-    {
-        <a href="#" class="list-group-item list-group-item-action active">
-            {model.Id}: {model.Name}
-        </a>
-    }
+    <div class="col-md-3">
+    <h3>Users</h3>
+
+    <table class="user-table">
+
+        @foreach(var user in Model.Users)
+        {
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary"> 
+                    @Html.DisplayName(user.UserName)
+                    </button>
+                </td>  
+            </tr>
+        }
+
     
+    </table>
+    </div>
+
+    <div class="col-md-3">
+    <h3>Chats</h3>
+
+    <table class="chat-table">
+        @foreach(var chat in Model.ChatRooms)
+        {
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary"> 
+                    @Html.DisplayName(chat.GetAwaiter().GetResult().Name)
+                    </button>
+                </td>  
+            </tr>
+        }
+    
+        
+    </table>
+    </div>
+
 </div>

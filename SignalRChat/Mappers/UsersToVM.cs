@@ -1,8 +1,9 @@
-﻿using SignalRChat.Models;
+﻿using SignalRChat.Interfaces;
+using SignalRChat.Models;
 
 namespace SignalRChat.Mappers
 {
-    public class UserListToVM
+    public class UsersToVM:IUsersToVM
     {
 
         public IEnumerable<UserVM> Map(IEnumerable<User> users)

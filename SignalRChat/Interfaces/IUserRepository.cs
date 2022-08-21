@@ -4,8 +4,11 @@ namespace SignalRChat.Interfaces
 {
     public interface IUserRepository
     {
+        Task<User?> GetById(int id);
+        Task<User?> GetByEmail(string email);
         Task<User?> GetByUserName(string userName);
-        Task<User?> CreateUserClient(User user);
-        Task<User?> ConfirmPassword(string userName, string password);
+        Task AddUser(User user);
+        Task SaveChanges();
+        Task<IEnumerable<User>> GetList(User user);
     }
 }
