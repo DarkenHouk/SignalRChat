@@ -94,5 +94,24 @@ namespace SignalRChat.Services
         {
             return await _chatRoomRepository.ExistsAsync(id);
         }
+
+        public async Task<ChatRoom> GetByIdAsync(int chatRoomId)
+        {
+            var result = await _chatRoomRepository.GetById(chatRoomId);
+            return result;
+        }
+
+        public async Task<IEnumerable<User>> GetUsersForChatRoom(int chatRoomId)
+        {
+            var chatRoom = await GetByIdAsync(chatRoomId);
+            var users = new List<User>();
+
+            foreach (var item in chatRoom.UserChatRooms)
+            {
+                var user = await _userService.GetUserById(item.UserId);
+                users.Add(user);
+            }
+            return users;
+        }
     }
 }

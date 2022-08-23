@@ -10,21 +10,21 @@ namespace SignalRChat.Interfaces
              Expression<Func<T, bool>>? filter = null,
              Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
              string includeProperties = "",
-             bool asNoTracking = false);
+             bool asNoTracking = true);
 
         public Task<IList<T>> QueryAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
             int? take = null, int skip = 0,
-            bool asNoTracking = false);
+            bool asNoTracking = true);
 
         Task<T?> GetById(int id, string includeProperties = "");
 
         Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-            bool asNoTracking = false);
+            bool asNoTracking = true);
 
         Task InsertAsync(T entity);
 

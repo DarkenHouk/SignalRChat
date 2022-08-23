@@ -1,5 +1,7 @@
 ﻿@model SignalRChat.Models.ChatsAndUsersVM
 
+
+
 <div class="row">
 
     <div class="col-md-3">
@@ -11,9 +13,18 @@
         {
             <tr>
                 <td>
-                    <button type="button" class="btn btn-primary"> 
-                    @Html.DisplayName(user.UserName)
-                    </button>
+
+                    <input type="button" 
+                        value="@Html.DisplayName(user.UserName)" 
+                        onclick="location.href= '@Url.RouteUrl(new 
+                            { 
+                                controller = "ChatList", 
+                                action = "PrivateChat", 
+                                clientName = Model.Client.UserName,
+                                userName = user.UserName
+                            })'" />
+
+                        
                 </td>  
             </tr>
         }
@@ -26,12 +37,20 @@
     <h3>Chats</h3>
 
     <table class="chat-table">
+
+        @if(Model.ChatRooms.Count() is 0){
+            <tr>
+                <td>
+                    <p>You have not chats yet((</p>
+                </td>
+            </tr>
+        }
         @foreach(var chat in Model.ChatRooms)
         {
             <tr>
                 <td>
                     <button type="button" class="btn btn-primary"> 
-                    @Html.DisplayName(chat.GetAwaiter().GetResult().Name)
+                        @Html.DisplayName(chat.GetAwaiter().GetResult().Name)
                     </button>
                 </td>  
             </tr>

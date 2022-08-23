@@ -30,8 +30,8 @@ namespace SignalRChat.Mappers
 
             for (int i = 0; i< userArray.Length; i++)
             {
-                var user = await _userService.GetUserById(userArray[0].UserId);
-                map.Name += user.UserName + "\t";
+                var user = await _userService.GetUserById(userArray[i].UserId);
+                map.Name += user.UserName + "\t/";
             }
             if (userArray.Length > 2)
             {

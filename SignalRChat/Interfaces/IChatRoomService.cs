@@ -9,5 +9,7 @@ namespace SignalRChat.Interfaces
         Task<ChatRoom> EnsurePrivateRoomCreatedAsync(int memberId1, int memberId2);
         Task<UserChatRoom?> GetUserChatRoomAsync(int userId, int chatRoomId);
         Task<bool> ExistsAsync(int id);
+        Task<ChatRoom> GetByIdAsync(int chatRoomId);
+        Task<IEnumerable<User>> GetUsersForChatRoom(int chatRoomId);
     }
 }

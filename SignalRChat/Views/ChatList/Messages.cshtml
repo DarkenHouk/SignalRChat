@@ -1,0 +1,73 @@
+﻿@model SignalRChat.Models.UserChatVM
+
+
+<div class="raw">
+
+    <div class="col-md-3">
+
+        <h3>Members:</h3>
+        <table class="me-md-auto">
+
+            @foreach (var member in Model.Members)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayName(member.UserName)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div class="border-1">
+
+            @foreach (var message in Model.Chat.Messages)
+            {
+                <div class="row">
+
+                    @if (message.SenderId!= Model.Client.Id)
+                    {
+                        <div class="col align-self-lg-start">
+                            <div class="col-7">
+                                @Html.DisplayName(message.SenderId.ToString())
+                                Send at: @Html.DisplayName(message.SentAt.ToString());
+                                @Html.DisplayName(message.Text)
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col align-self-lg-end">
+                            <div class="col-7">
+                                Send at: @Html.DisplayName(message.SentAt.ToString());
+                                @Html.DisplayName(message.Text)
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class=" col-10">
+        @Html.TextBoxFor(m=> m.Text)
+        <input type="button" 
+                        value="Send" 
+                        onclick="location.href= '@Url.RouteUrl(new 
+                            { 
+                                controller = "ChatList", 
+                                action = "SendMessage", 
+                                clientId = Model.Client.Id, 
+                                chatId = Model.Chat.Id
+                            })'" />
+    </div>
+    <></>
+
+</div>

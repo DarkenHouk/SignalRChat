@@ -46,7 +46,7 @@ namespace SignalRChat.Repositories
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             string includeProperties = "",
-            bool asNoTracking = false)
+            bool asNoTracking = true)
         {
             var query = GetQuery(filter, orderBy, includeProperties);
 
@@ -69,7 +69,7 @@ namespace SignalRChat.Repositories
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
             int? take = null, int skip = 0,
-            bool asNoTracking = false)
+            bool asNoTracking = true)
         {
             var query = DbSet.AsQueryable();
 
@@ -96,7 +96,7 @@ namespace SignalRChat.Repositories
         public async Task<T?> GetFirstOrDefaultAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-            bool asNoTracking = false)
+            bool asNoTracking = true)
         {
             var query = await QueryAsync(
                 filter: filter,
