@@ -16,6 +16,7 @@ namespace SignalRChat.Mappers
         {
             UserVM map = new UserVM()
             {
+                Id = user.Id,
                 UserName = user.UserName
             };
             return map;

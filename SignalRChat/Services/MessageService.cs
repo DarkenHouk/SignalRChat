@@ -78,6 +78,11 @@ namespace SignalRChat.Services
 
         public async Task CreateAsync(Message message)
         {
+            if(message.Text==null)
+            {
+                throw new Exception();
+            }
+
             if (!await _chatRoomRepository.ExistsAsync(message.ChatRoomId))
             {
                 throw new Exception();

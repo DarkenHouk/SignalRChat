@@ -103,10 +103,10 @@ namespace SignalRChat.Services
 
         public async Task<IEnumerable<User>> GetUsersForChatRoom(int chatRoomId)
         {
-            var chatRoom = await GetByIdAsync(chatRoomId);
+            var userChatRooms = await _userChatRoomRepository.GetAsync(filter: chat=> chat.ChatRoomId==chatRoomId);
             var users = new List<User>();
 
-            foreach (var item in chatRoom.UserChatRooms)
+            foreach (var item in userChatRooms)
             {
                 var user = await _userService.GetUserById(item.UserId);
                 users.Add(user);

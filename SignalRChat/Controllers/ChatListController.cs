@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SignalRChat.Interfaces;
 using SignalRChat.Models;
+using SignalRChat.Extenstions;
 
 namespace SignalRChat.Controllers
 {
@@ -60,17 +61,21 @@ namespace SignalRChat.Controllers
             var client = await _userService.GetByUserName(clientName);
             var user = await _userService.GetByUserName(userName);
             var chatRoom = await _chatRoomService.EnsurePrivateRoomCreatedAsync(user.Id, client.Id);
-            var members = await _chatRoomService.GetUsersForChatRoom(chatRoom.Id);
+            //var messages = await _messageService.GetMessagesInChatRoomAsync(chatRoom.Id, 0,20);
+            //chatRoom.Messages = messages;
 
-            var membersVM = _usersToVM.Map(members);
+            //var members = await _chatRoomService.GetUsersForChatRoom(chatRoom.Id);
 
-            var clientAndChat = new UserChatVM()
-            {
-                Client = client,
-                Chat = chatRoom,
-                Members = membersVM
-            };
-            return View("Messages", clientAndChat);
+            //var membersVM = _usersToVM.Map(members);
+
+            //var clientAndChat = new UserChatVM()
+            //{
+            //    Client = client,
+            //    Chat = chatRoom,
+            //    Members = membersVM
+            //};
+            //return View("Messages", clientAndChat);
+            return await Messages(client.Id, chatRoom.Id);
         }
         private async Task<IActionResult> ChatList(User client, ChatRoom chat)
         {
@@ -91,10 +96,18 @@ namespace SignalRChat.Controllers
             return await Messages(senderId, chatRoomId);
         }
 
+        public async Task<IActionResult> SendText(UserChatVM userChatVM)
+        {
+            return await SendMessage(userChatVM.Chat.Id, userChatVM.Client.Id, userChatVM.Text);
+        }
+
         private async Task<IActionResult> Messages(int clientId, int chatId)
         {
             var client = await _userService.GetUserById(clientId);
             var chatRoom = await _chatRoomService.GetByIdAsync(chatId);
+            var messages = await _messageService.GetMessagesInChatRoomAsync(chatRoom.Id, 0, 20);
+            var reverse = messages.Reverse();
+            chatRoom.Messages = reverse;
             var members = await _chatRoomService.GetUsersForChatRoom(chatId);
             var membersVM = _usersToVM.Map(members);
 
@@ -104,7 +117,7 @@ namespace SignalRChat.Controllers
                 Chat = chatRoom,
                 Members = membersVM
             };
-            return View(clientAndChat);
+            return View("Messages",clientAndChat);
         }
     }
 }

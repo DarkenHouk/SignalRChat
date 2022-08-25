@@ -1,12 +1,12 @@
 ﻿@model SignalRChat.Models.UserChatVM
 
 
-<div class="raw">
+<div class="row">
 
     <div class="col-md-3">
 
         <h3>Members:</h3>
-        <table class="me-md-auto">
+        <table class="me-md-10">
 
             @foreach (var member in Model.Members)
             {
@@ -16,58 +16,68 @@
                     </td>
                 </tr>
             }
-
         </table>
 
-        <div class="border-1">
+    </div>
 
-            @foreach (var message in Model.Chat.Messages)
+    <div class="col-md-8 bg-success">
+
+        @if (Model.Chat.Messages.Count() is 0)
+        {
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    Write your first message!
+                </div>
+            </div>
+
+        }
+        else
+        {
+             @foreach (var message in Model.Chat.Messages)
             {
-                <div class="row">
 
                     @if (message.SenderId!= Model.Client.Id)
                     {
-                        <div class="col align-self-lg-start">
-                            <div class="col-7">
-                                @Html.DisplayName(message.SenderId.ToString())
-                                Send at: @Html.DisplayName(message.SentAt.ToString());
-                                @Html.DisplayName(message.Text)
+                        <div class="row justify-content-start">
+                            <div class="col-4 bg-info">
+                                <p class="text-light"><small>@Html.DisplayName(Model.Members.First(u=> u.Id == message.SenderId).UserName)</small></p>
+                                <p class="text-light"><small>Send at: @Html.DisplayName(message.SentAt.ToShortTimeString())</small></p>
+                                <p>@Html.DisplayName(message.Text)</p>
+
                             </div>
                         </div>
                     }
                     else
                     {
-                        <div class="col align-self-lg-end">
-                            <div class="col-7">
-                                Send at: @Html.DisplayName(message.SentAt.ToString());
-                                @Html.DisplayName(message.Text)
+                        <div class="row justify-content-end">
+                            <div class="col-4 bg-primary">
+                                <p class="text-light"><small>Send at: @Html.DisplayName(message.SentAt.ToShortTimeString())</small></p>
+                                <p>@Html.DisplayName(message.Text)</p>
+                                
                             </div>
                         </div>
                     }
 
-                </div>
             }
+        }    
 
+        
+        <div class="row justify-content-end">
+            <div class="col-6">
+                <p></p>
+                @using(@Html.BeginForm("SendText", "ChatList", FormMethod.Post))
+                {
+                    <div style="display: none;">@Html.EditorFor(model => model.Client)</div>
+                    <div style="display: none;">@Html.EditorFor(model => model.Chat)</div>
+                    <div style="display: none;">@Html.EditorFor(model => model.Members)</div>
+                    @Html.TextBoxFor(model=> model.Text);
+
+                    <button class="btn-warning">Send</button>
+                }
+            </div>
         </div>
 
+        
     </div>
-
 </div>
 
-<div class="row">
-
-    <div class=" col-10">
-        @Html.TextBoxFor(m=> m.Text)
-        <input type="button" 
-                        value="Send" 
-                        onclick="location.href= '@Url.RouteUrl(new 
-                            { 
-                                controller = "ChatList", 
-                                action = "SendMessage", 
-                                clientId = Model.Client.Id, 
-                                chatId = Model.Chat.Id
-                            })'" />
-    </div>
-    <></>
-
-</div>
