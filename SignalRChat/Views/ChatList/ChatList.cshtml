@@ -4,7 +4,7 @@
 
 <div class="row">
 
-    <div class="col-md-3">
+    <div class="col-md-4">
     <h3>Users</h3>
 
     <table class="user-table">
@@ -13,8 +13,8 @@
         {
             <tr>
                 <td>
-
-                    <input type="button" 
+                    <div class="d-grid gap-2">
+                        <input type="button" 
                         value="@Html.DisplayName(user.UserName)" 
                         onclick="location.href= '@Url.RouteUrl(new 
                             { 
@@ -23,8 +23,8 @@
                                 clientName = Model.Client.UserName,
                                 userName = user.UserName
                             })'" />
-
-                        
+                    </div>
+                   
                 </td>  
             </tr>
         }
@@ -33,7 +33,7 @@
     </table>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-5">
     <h3>Chats</h3>
 
     <table class="chat-table">
@@ -47,17 +47,36 @@
         }
         @foreach(var chat in Model.ChatRooms)
         {
-            <tr>
+            <tr class="d-xl-table">
                 <td>
-                    <button type="button" class="btn btn-primary"> 
-                        @Html.DisplayName(chat.GetAwaiter().GetResult().Name)
-                    </button>
+                    <div class="d-grid gap-2">
+                        <input type="button"
+                        class="btn-warning"
+                        value="@Html.DisplayName(chat.GetAwaiter().GetResult().Name)" 
+                        onclick="location.href= '@Url.RouteUrl(new 
+                            { 
+                                controller = "ChatList", 
+                                action = "Messages", 
+                                clientId = Model.Client.Id,
+                                chatId = chat.GetAwaiter().GetResult().Id
+                            })'" />
+                    </div>               
                 </td>  
             </tr>
         }
     
         
     </table>
+    </div>
+
+    <div class="col-md-3">
+        <h3>Create new chat</h3>
+        
+        <input type="button"
+                        class="btn-success"
+                        value="Create" 
+                        onclick="location.href= '@Url.ActionLink("GroupChat","ChatList", Model.Client)'" />
+
     </div>
 
 </div>

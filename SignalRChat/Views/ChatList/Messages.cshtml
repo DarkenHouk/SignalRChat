@@ -40,8 +40,10 @@
                     {
                         <div class="row justify-content-start">
                             <div class="col-4 bg-info">
-                                <p class="text-light"><small>@Html.DisplayName(Model.Members.First(u=> u.Id == message.SenderId).UserName)</small></p>
-                                <p class="text-light"><small>Send at: @Html.DisplayName(message.SentAt.ToShortTimeString())</small></p>
+                                <p class="text-light"><small>
+                                    @Html.DisplayName(Model.Members.First(u=> u.Id == message.SenderId).UserName)
+                                    //Send at: @Html.DisplayName(message.SentAt.ToShortTimeString())
+                                    </small></p>
                                 <p>@Html.DisplayName(message.Text)</p>
 
                             </div>
@@ -59,9 +61,10 @@
                     }
 
             }
-        }    
+        }           
+    </div>
+</div>
 
-        
         <div class="row justify-content-end">
             <div class="col-6">
                 <p></p>
@@ -76,8 +79,4 @@
                 }
             </div>
         </div>
-
-        
-    </div>
-</div>
 

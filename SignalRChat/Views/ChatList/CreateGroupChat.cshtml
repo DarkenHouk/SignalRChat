@@ -1,0 +1,44 @@
+﻿@model SignalRChat.Models.CreateChat
+
+<div class="row">
+
+    <div class="col-3">
+
+        <h3>Add users to new chat</h3>
+
+        @foreach (var user in Model.Users)
+        {
+            if (Model.SelectedUsers.Contains(user))
+            {   
+                @using (@Html.BeginForm("RemoveFromSelected", "ChatList", FormMethod.Post))
+                {
+                    <p>
+                        <div style="display: none;">@Html.EditorFor(model => model.Client)</div>
+                        <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
+                        <div style="display: none;">@Html.EditorFor(model => model.SelectedUsers)</div>
+                        <div style="display: none;">@Html.TextBoxFor(model => model.AddOrRemoveUser,new { @Value = @user })</div>
+                    
+                        <button class="btn-primary">@user.UserName</button>
+                    </p>
+                }
+            }
+            else
+            {
+
+                @using (@Html.BeginForm("AddToSelected", "ChatList", FormMethod.Post))
+                {
+                    <p>
+                        <div style="display: none;">@Html.EditorFor(model => model.Client)</div>
+                        <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
+                        <div style="display: none;">@Html.EditorFor(model => model.SelectedUsers)</div>
+                        <div style="display: none;">@Html.TextBoxFor(model => model.AddOrRemoveUser,new { @Value = @user })</div>
+                    
+                        <button class="btn-primary">@user.UserName</button>
+                    </p>
+                }
+            }
+        }
+
+    </div>
+
+</div>

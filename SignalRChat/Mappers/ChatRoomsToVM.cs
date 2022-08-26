@@ -31,11 +31,19 @@ namespace SignalRChat.Mappers
             for (int i = 0; i< userArray.Length; i++)
             {
                 var user = await _userService.GetUserById(userArray[i].UserId);
-                map.Name += user.UserName + "\t/";
+                if (i == 0)
+                {
+                    map.Name += user.UserName + " / ";
+                }
+                else
+                {
+                    map.Name += user.UserName;
+                }
+                
             }
             if (userArray.Length > 2)
             {
-                map.Name += $"and {userArray.Length - 2} other users";
+                map.Name += $" and {userArray.Length - 2} other users";
             }
      
             return map;
