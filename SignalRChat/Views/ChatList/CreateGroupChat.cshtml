@@ -13,9 +13,10 @@
                 @using (@Html.BeginForm("RemoveFromSelected", "ChatList", FormMethod.Post))
                 {
                     <p>
-                        <div style="display: none;">@Html.EditorFor(model => model.Client)</div>
+                        <div style="display: none;">@Html.EditorForModel()</div>
+                        @*<div style="display: none;">@Html.EditorFor(model => model.Client)</div>
                         <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
-                        <div style="display: none;">@Html.EditorFor(model => model.SelectedUsers)</div>
+                        <div style="display: none;">@Html.EditorFor(model => model.SelectedUsers)</div>*@
                         <div style="display: none;">@Html.TextBoxFor(model => model.AddOrRemoveUser,new { @Value = @user })</div>
                     
                         <button class="btn-primary">@user.UserName</button>
@@ -28,11 +29,11 @@
                 @using (@Html.BeginForm("AddToSelected", "ChatList", FormMethod.Post))
                 {
                     <p>
-                        <div style="display: none;">@Html.EditorFor(model => model.Client)</div>
-                        <div style="display: none;">@Html.EditorFor(model => model.Users)</div>
-                        <div style="display: none;">@Html.EditorFor(model => model.SelectedUsers)</div>
-                        <div style="display: none;">@Html.TextBoxFor(model => model.AddOrRemoveUser,new { @Value = @user })</div>
-                    
+
+                        <div style="display: none;">@Html.EditorForModel()</div>
+
+                        <div style="display: none;">@Html.TextBoxFor(model=>model.AddOrRemoveUser, new{@Value})</div>
+
                         <button class="btn-primary">@user.UserName</button>
                     </p>
                 }

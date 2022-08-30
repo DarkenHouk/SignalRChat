@@ -80,3 +80,16 @@
             </div>
         </div>
 
+        <div class="d-grid gap-2 position-absolute bottom-0">
+
+                        <input type="button"
+                        class="btn-danger"
+                        value="Log out" 
+                        onclick="location.href= '@Url.Action(
+                            "ChatListVM",
+                            "ChatList",
+                            new{
+                                clientId = @Model.Client.Id
+                            })'"/>
+       </div>
+

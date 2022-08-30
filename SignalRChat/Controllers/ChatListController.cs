@@ -56,6 +56,12 @@ namespace SignalRChat.Controllers
             return View();
         }
 
+        public async Task<IActionResult> ChatListVM(int clientId)
+        {
+            var user = await _userService.GetUserById(clientId);
+            return await ChatList(user);
+        }
+
         public async Task<IActionResult> PrivateChat(string clientName, string userName)
         {
             var client = await _userService.GetByUserName(clientName);
